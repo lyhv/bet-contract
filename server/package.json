@@ -1,0 +1,27 @@
+{
+  "name": "polymer-bet-server",
+  "version": "1.0.0",
+  "description": "Polymer fetch data betapp service",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daningyn/bet-dapp-polymer-chain.git"
+  },
+  "author": "Danh Nguyen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/daningyn/bet-dapp-polymer-chain/issues"
+  },
+  "homepage": "https://github.com/daningyn/bet-dapp-polymer-chain#readme",
+  "dependencies": {
+    "@chainlink/contracts": "^0.8.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.3"
+  },
+  "devDependencies": {
+    "hardhat": "^2.22.1"
+  }
+}
