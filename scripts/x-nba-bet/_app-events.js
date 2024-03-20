@@ -92,4 +92,6 @@ async function setupNBABetEventListener() {
   listenForBetEvents(config.createChannel.srcChain, srcIbcApp);
 }
 
+setupNBABetEventListener();
+
 module.exports = { setupNBABetEventListener };
