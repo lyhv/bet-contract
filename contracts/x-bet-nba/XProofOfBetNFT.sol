@@ -79,13 +79,13 @@ contract XProofOfBetNFT is ERC721, CustomChanIbcApp {
         recvedPackets.push(packet);
 
         // Decode the packet data
-        (address senderAddress, uint256 matchId) = abi.decode(
+        (address senderAddress, uint256 matchId, string memory logoTeam) = abi.decode(
             packet.data,
-            (address, uint256)
+            (address, uint256, string)
         );
 
         // Mint the NFT
-        uint256 betNFTId = mint(senderAddress, "");
+        uint256 betNFTId = mint(senderAddress, logoTeam);
         povNFTof[matchId][msg.sender] = betNFTId;
 
         // Encode the ack data
