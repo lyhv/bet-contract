@@ -19,6 +19,7 @@ contract NBABet is CustomChanIbcApp {
         uint256 betTime;
         IbcPacketStatus ibcPacketStatus;
         uint betNFTId;
+        string teamLogo;
     }
 
     mapping(uint256 => mapping(address => bool)) public hasBet;
@@ -38,7 +39,8 @@ contract NBABet is CustomChanIbcApp {
         uint predictedTeam,
         uint256 betAmount,
         uint256 betRate,
-        uint256 betTime
+        uint256 betTime,
+        string teamLogo
     );
 
     event SendBetInfo(bytes32 channelId, address betUser, uint256 matchId);
@@ -64,7 +66,13 @@ contract NBABet is CustomChanIbcApp {
         chairperson = msg.sender;
     }
 
-    function placeBet(uint256 _matchId, uint _predictedTeam) external payable {
+    function placeBet(
+        uint256 _matchId,
+        uint _predictedTeam,
+        string memory _teamLogo,
+        bytes32 _channelId,
+        uint64 _timeoutSeconds
+    ) external payable {
         if (msg.value <= 0) revert NotHaveAmountBet();
         require(
             !hasBet[_matchId][msg.sender],
@@ -77,6 +85,7 @@ contract NBABet is CustomChanIbcApp {
         bet.predictedTeam = _predictedTeam;
         bet.betRate = 0;
         bet.betTime = block.timestamp;
+        bet.teamLogo = _teamLogo;
 
         hasBet[_matchId][msg.sender] = true;
 
@@ -88,16 +97,20 @@ contract NBABet is CustomChanIbcApp {
             msg.value,
             _predictedTeam,
             0,
-            bet.betTime
+            bet.betTime,
+            _teamLogo
         );
+
+        sendPacket(_channelId, _timeoutSeconds, msg.sender, _matchId, _teamLogo);
     }
 
     function sendPacket(
         bytes32 channelId,
         uint64 timeoutSeconds,
         address senderAddress,
-        uint256 matchId
-    ) external {
+        uint256 matchId,
+        string memory _teamLogo
+    ) internal {
         Bet storage bet = betsOf[matchId][senderAddress];
         require(
             bet.ibcPacketStatus == IbcPacketStatus.UNSENT ||
@@ -107,7 +120,8 @@ contract NBABet is CustomChanIbcApp {
 
         bytes memory payload = abi.encode(
             senderAddress,
-            matchId
+            matchId,
+            _teamLogo
         );
 
         uint64 timeoutTimestamp = uint64(

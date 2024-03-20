@@ -19,22 +19,26 @@ async function main() {
 
   // Change if your want to send a vote from a different address
   const betAccount = accounts[0];
-
   const matchId = Math.floor(Math.random() * 100000000);
-  await ibcApp.connect(betAccount).placeBet(matchId, 1, {
-    value: hre.ethers.parseEther("0.001"),
-  });
+  await ibcApp.connect(betAccount).placeBet(matchId,
+                                            1,
+                                            "https://lsm-static-prod.livescore.com/medium/enet/58510.png",
+                                            hre.ethers.encodeBytes32String(sendConfig[`${networkName}`]["channelId"]),
+                                            sendConfig[`${networkName}`]["timeout"],
+                                            {
+                                              value: hre.ethers.parseEther("0.001"),
+                                            });
   // Do logic to prepare the packet
-  const channelId = sendConfig[`${networkName}`]["channelId"];
-  const channelIdBytes = hre.ethers.encodeBytes32String(channelId);
-  const timeoutSeconds = sendConfig[`${networkName}`]["timeout"];
+  // const channelId = sendConfig[`${networkName}`]["channelId"];
+  // const channelIdBytes = hre.ethers.encodeBytes32String(channelId);
+  // const timeoutSeconds = sendConfig[`${networkName}`]["timeout"];
 
-  // Send the packet
-  const betAddress = betAccount.address;
+  // // Send the packet
+  // const betAddress = betAccount.address;
 
-  await ibcApp
-    .connect(accounts[0])
-    .sendPacket(channelIdBytes, timeoutSeconds, betAddress, matchId);
+  // await ibcApp
+  //   .connect(accounts[0])
+  //   .sendPacket(channelIdBytes, timeoutSeconds, betAddress, matchId);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
