@@ -28,17 +28,6 @@ async function main() {
                                             {
                                               value: hre.ethers.parseEther("0.001"),
                                             });
-  // Do logic to prepare the packet
-  // const channelId = sendConfig[`${networkName}`]["channelId"];
-  // const channelIdBytes = hre.ethers.encodeBytes32String(channelId);
-  // const timeoutSeconds = sendConfig[`${networkName}`]["timeout"];
-
-  // // Send the packet
-  // const betAddress = betAccount.address;
-
-  // await ibcApp
-  //   .connect(accounts[0])
-  //   .sendPacket(channelIdBytes, timeoutSeconds, betAddress, matchId);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
